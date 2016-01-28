@@ -1,0 +1,356 @@
+Test Cases:
+
+1). Purpose: Given testcase with the challenge. Tests overall basic functionality. 
+ 
+    startingLocation: "Kruthika's abode"
+    endLocation: "Craig's Haunt"
+    Edges: List(
+  Map("startLocation" -> "Kruthika's abode", "endLocation" -> "Mark's crib", "distance" -> 9),
+  Map("startLocation" -> "Kruthika's abode", "endLocation" -> "Greg's casa", "distance" -> 4),
+  Map("startLocation" -> "Kruthika's abode", "endLocation" -> "Matt's pad", "distance" -> 18),
+  Map("startLocation" -> "Kruthika's abode", "endLocation" -> "Brian's apartment", "distance" -> 8),
+  Map("startLocation" -> "Brian's apartment", "endLocation" -> "Wesley's condo", "distance" -> 7),
+  Map("startLocation" -> "Brian's apartment", "endLocation" -> "Cam's dwelling", "distance" -> 17),
+  Map("startLocation" -> "Greg's casa", "endLocation" -> "Cam's dwelling", "distance" -> 13),
+  Map("startLocation" -> "Greg's casa", "endLocation" -> "Mike's digs", "distance" -> 19),
+  Map("startLocation" -> "Greg's casa", "endLocation" -> "Matt's pad", "distance" -> 14),
+  Map("startLocation" -> "Wesley's condo", "endLocation" -> "Kirk's farm", "distance" -> 10),
+  Map("startLocation" -> "Wesley's condo", "endLocation" -> "Nathan's flat", "distance" -> 11),
+  Map("startLocation" -> "Wesley's condo", "endLocation" -> "Bryce's den", "distance" -> 6),
+  Map("startLocation" -> "Matt's pad", "endLocation" -> "Mark's crib", "distance" -> 19),
+  Map("startLocation" -> "Matt's pad", "endLocation" -> "Nathan's flat", "distance" -> 15),
+  Map("startLocation" -> "Matt's pad", "endLocation" -> "Craig's haunt", "distance" -> 14),
+  Map("startLocation" -> "Mark's crib", "endLocation" -> "Kirk's farm", "distance" -> 9),
+  Map("startLocation" -> "Mark's crib", "endLocation" -> "Nathan's flat", "distance" -> 12),
+  Map("startLocation" -> "Bryce's den", "endLocation" -> "Craig's haunt", "distance" -> 10),
+  Map("startLocation" -> "Bryce's den", "endLocation" -> "Mike's digs", "distance" -> 9),
+  Map("startLocation" -> "Mike's digs", "endLocation" -> "Cam's dwelling", "distance" -> 20),
+  Map("startLocation" -> "Mike's digs", "endLocation" -> "Nathan's flat", "distance" -> 12),
+  Map("startLocation" -> "Cam's dwelling", "endLocation" -> "Craig's haunt", "distance" -> 18),
+  Map("startLocation" -> "Nathan's flat", "endLocation" -> "Kirk's farm", "distance" -> 3))
+
+  Expected Result: Map("distance" -> 31, "path" -> "Kruthika's abode => Brian's apartment => Wesley's condo 
+	                => Bryce's den => Craig's haunt")
+
+2). Purpose: This test looks for two things. The first thing it looks at is making sure if two paths of equal
+    length both have an edge of different weight that leads to the final destination the program will correctly
+    switch to the path that has the smaller final edge instead of just seeing the final location and jumping
+    there regardless. The second thing it checks is to make sure I correctly mark a node as visisted so it 
+    isn't considered again. 
+
+    startingLocation: "A"
+    endLocation: "D"
+    Edges: List(
+  	     Map("startLocation" -> "A", "endLocation" -> "F", "distance" -> 4),
+  	     Map("startLocation" -> "A", "endLocation" -> "B", "distance" -> 4),
+ 	     Map("startLocation" -> "A", "endLocation" -> "G", "distance" -> 4),
+  	     Map("startLocation" -> "B", "endLocation" -> "C", "distance" -> 5),
+  	     Map("startLocation" -> "C", "endLocation" -> "D", "distance" -> 4),
+  	     Map("startLocation" -> "F", "endLocation" -> "E", "distance" -> 5),
+  	     Map("startLocation" -> "F", "endLocation" -> "G", "distance" -> 4),
+  	     Map("startLocation" -> "E", "endLocation" -> "D", "distance" -> 3),
+  	     Map("startLocation" -> "G", "endLocation" -> "C", "distance" -> 4),
+  	     Map("startLocation" -> "G", "endLocation" -> "E", "distance" -> 4),
+  	     Map("startLocation" -> "G", "endLocation" -> "B", "distance" -> 4))
+
+     Expected Result: Map(distance -> 12, path -> A => F => E => D)
+
+3). Purpose: This test is here to make sure the program can recognize when a path is possible or not. The
+    given starting location is a valid location but the endLocation doesn't exist. Therefore a possible path
+    should not be discovered and it should print a message saying so while returning with no errors.
+
+    startingLocation: "A"
+    endLocation: "Z"
+    Edges: List(
+  	     Map("startLocation" -> "A", "endLocation" -> "F", "distance" -> 4),
+  	     Map("startLocation" -> "A", "endLocation" -> "B", "distance" -> 4),
+ 	     Map("startLocation" -> "A", "endLocation" -> "G", "distance" -> 4),
+  	     Map("startLocation" -> "B", "endLocation" -> "C", "distance" -> 5),
+  	     Map("startLocation" -> "C", "endLocation" -> "D", "distance" -> 4),
+  	     Map("startLocation" -> "F", "endLocation" -> "E", "distance" -> 5),
+  	     Map("startLocation" -> "F", "endLocation" -> "G", "distance" -> 4),
+  	     Map("startLocation" -> "E", "endLocation" -> "D", "distance" -> 3),
+  	     Map("startLocation" -> "G", "endLocation" -> "C", "distance" -> 4),
+  	     Map("startLocation" -> "G", "endLocation" -> "E", "distance" -> 4),
+  	     Map("startLocation" -> "G", "endLocation" -> "B", "distance" -> 4))
+
+     Expected Result: No possible path found between A and Z 
+
+4). Purpose: This test is similar to the previous test except the endLocation is a valid location in the graph.
+    This time there are no edges that connect start and end but both locations exist within the graph. The
+    result therefore should be no possible path found and the program printing a message saying so. 
+
+     startingLocation: "Mark's Crib"
+     endLocation: "Kruthika's abode"
+     Edges: List(
+  Map("startLocation" -> "Kruthika's abode", "endLocation" -> "Mark's crib", "distance" -> 9),
+  Map("startLocation" -> "Kruthika's abode", "endLocation" -> "Greg's casa", "distance" -> 4),
+  Map("startLocation" -> "Kruthika's abode", "endLocation" -> "Matt's pad", "distance" -> 18),
+  Map("startLocation" -> "Kruthika's abode", "endLocation" -> "Brian's apartment", "distance" -> 8),
+  Map("startLocation" -> "Brian's apartment", "endLocation" -> "Wesley's condo", "distance" -> 7),
+  Map("startLocation" -> "Brian's apartment", "endLocation" -> "Cam's dwelling", "distance" -> 17),
+  Map("startLocation" -> "Greg's casa", "endLocation" -> "Cam's dwelling", "distance" -> 13),
+  Map("startLocation" -> "Greg's casa", "endLocation" -> "Mike's digs", "distance" -> 19),
+  Map("startLocation" -> "Greg's casa", "endLocation" -> "Matt's pad", "distance" -> 14),
+  Map("startLocation" -> "Wesley's condo", "endLocation" -> "Kirk's farm", "distance" -> 10),
+  Map("startLocation" -> "Wesley's condo", "endLocation" -> "Nathan's flat", "distance" -> 11),
+  Map("startLocation" -> "Wesley's condo", "endLocation" -> "Bryce's den", "distance" -> 6),
+  Map("startLocation" -> "Matt's pad", "endLocation" -> "Mark's crib", "distance" -> 19),
+  Map("startLocation" -> "Matt's pad", "endLocation" -> "Nathan's flat", "distance" -> 15),
+  Map("startLocation" -> "Matt's pad", "endLocation" -> "Craig's haunt", "distance" -> 14),
+  Map("startLocation" -> "Mark's crib", "endLocation" -> "Kirk's farm", "distance" -> 9),
+  Map("startLocation" -> "Mark's crib", "endLocation" -> "Nathan's flat", "distance" -> 12),
+  Map("startLocation" -> "Bryce's den", "endLocation" -> "Craig's haunt", "distance" -> 10),
+  Map("startLocation" -> "Bryce's den", "endLocation" -> "Mike's digs", "distance" -> 9),
+  Map("startLocation" -> "Mike's digs", "endLocation" -> "Cam's dwelling", "distance" -> 20),
+  Map("startLocation" -> "Mike's digs", "endLocation" -> "Nathan's flat", "distance" -> 12),
+  Map("startLocation" -> "Cam's dwelling", "endLocation" -> "Craig's haunt", "distance" -> 18),
+  Map("startLocation" -> "Nathan's flat", "endLocation" -> "Kirk's farm", "distance" -> 3))
+
+     Expected Result: No possible path found between A and Z 
+
+5). Purpose: This is a stress test. With many edges availabe this test is to ensure with a lot of path options 
+    the program is able to find the shortest path without any errors or bugs that might be caused by the large
+    input.  
+
+    startingLocation: "A"
+    endLocation: "Z"
+    Edges: List(
+  	     Map("startLocation" -> "A", "endLocation" -> "B", "distance" -> 3),
+  	     Map("startLocation" -> "A", "endLocation" -> "F", "distance" -> 2),
+ 	     Map("startLocation" -> "F", "endLocation" -> "E", "distance" -> 3),
+  	     Map("startLocation" -> "B", "endLocation" -> "C", "distance" -> 1),
+  	     Map("startLocation" -> "C", "endLocation" -> "E", "distance" -> 3),
+  	     Map("startLocation" -> "B", "endLocation" -> "D", "distance" -> 3),
+  	     Map("startLocation" -> "D", "endLocation" -> "I", "distance" -> 5),
+  	     Map("startLocation" -> "C", "endLocation" -> "I", "distance" -> 2),
+  	     Map("startLocation" -> "E", "endLocation" -> "H", "distance" -> 6),
+  	     Map("startLocation" -> "F", "endLocation" -> "G", "distance" -> 2),
+  	     Map("startLocation" -> "G", "endLocation" -> "M", "distance" -> 5),
+	     Map("startLocation" -> "H", "endLocation" -> "M", "distance" -> 4),
+  	     Map("startLocation" -> "I", "endLocation" -> "J", "distance" -> 3),
+ 	     Map("startLocation" -> "I", "endLocation" -> "K", "distance" -> 5),
+  	     Map("startLocation" -> "I", "endLocation" -> "L", "distance" -> 4),
+  	     Map("startLocation" -> "L", "endLocation" -> "O", "distance" -> 3),
+  	     Map("startLocation" -> "L", "endLocation" -> "N", "distance" -> 4),
+  	     Map("startLocation" -> "N", "endLocation" -> "T", "distance" -> 5),
+  	     Map("startLocation" -> "K", "endLocation" -> "P", "distance" -> 5),
+  	     Map("startLocation" -> "P", "endLocation" -> "Q", "distance" -> 4),
+  	     Map("startLocation" -> "Q", "endLocation" -> "Y", "distance" -> 8),
+  	     Map("startLocation" -> "Q", "endLocation" -> "W", "distance" -> 4),
+  	     Map("startLocation" -> "W", "endLocation" -> "Y", "distance" -> 7),
+  	     Map("startLocation" -> "W", "endLocation" -> "X", "distance" -> 5),
+             Map("startLocation" -> "K", "endLocation" -> "O", "distance" -> 3),
+  	     Map("startLocation" -> "O", "endLocation" -> "R", "distance" -> 4),
+ 	     Map("startLocation" -> "O", "endLocation" -> "S", "distance" -> 5),
+  	     Map("startLocation" -> "O", "endLocation" -> "V", "distance" -> 7),
+  	     Map("startLocation" -> "S", "endLocation" -> "V", "distance" -> 2),
+  	     Map("startLocation" -> "V", "endLocation" -> "Z", "distance" -> 9),
+  	     Map("startLocation" -> "M", "endLocation" -> "T", "distance" -> 4),
+  	     Map("startLocation" -> "T", "endLocation" -> "U", "distance" -> 3),
+  	     Map("startLocation" -> "U", "endLocation" -> "Z", "distance" -> 6),
+  	     Map("startLocation" -> "M", "endLocation" -> "N", "distance" -> 4),
+  	     Map("startLocation" -> "N", "endLocation" -> "S", "distance" -> 3),
+             Map("startLocation" -> "H", "endLocation" -> "N", "distance" -> 3),
+             Map("startLocation" -> "H", "endLocation" -> "L", "distance" -> 2),
+             Map("startLocation" -> "R", "endLocation" -> "W", "distance" -> 5),
+             Map("startLocation" -> "N", "endLocation" -> "Z", "distance" -> 8))
+
+     Expected Result: Map(distance -> 21, path -> A => F => G => M => N => Z)
+
+6). Purpose: This is another stress test. With many edges availabe this test is to ensure with a lot of path options 
+    the program is able to find the shortest path without any errors or bugs that might be caused by the large
+    input.  
+
+    startingLocation: "A"
+    endLocation: "Y"
+    Edges: List(
+  	     Map("startLocation" -> "A", "endLocation" -> "B", "distance" -> 3),
+  	     Map("startLocation" -> "A", "endLocation" -> "F", "distance" -> 2),
+ 	     Map("startLocation" -> "F", "endLocation" -> "E", "distance" -> 3),
+  	     Map("startLocation" -> "B", "endLocation" -> "C", "distance" -> 1),
+  	     Map("startLocation" -> "C", "endLocation" -> "E", "distance" -> 3),
+  	     Map("startLocation" -> "B", "endLocation" -> "D", "distance" -> 3),
+  	     Map("startLocation" -> "D", "endLocation" -> "I", "distance" -> 5),
+  	     Map("startLocation" -> "C", "endLocation" -> "I", "distance" -> 2),
+  	     Map("startLocation" -> "E", "endLocation" -> "H", "distance" -> 6),
+  	     Map("startLocation" -> "F", "endLocation" -> "G", "distance" -> 2),
+  	     Map("startLocation" -> "G", "endLocation" -> "M", "distance" -> 5),
+	     Map("startLocation" -> "H", "endLocation" -> "M", "distance" -> 4),
+  	     Map("startLocation" -> "I", "endLocation" -> "J", "distance" -> 3),
+ 	     Map("startLocation" -> "I", "endLocation" -> "K", "distance" -> 5),
+  	     Map("startLocation" -> "I", "endLocation" -> "L", "distance" -> 4),
+  	     Map("startLocation" -> "L", "endLocation" -> "O", "distance" -> 3),
+  	     Map("startLocation" -> "L", "endLocation" -> "N", "distance" -> 4),
+  	     Map("startLocation" -> "N", "endLocation" -> "T", "distance" -> 5),
+  	     Map("startLocation" -> "K", "endLocation" -> "P", "distance" -> 5),
+  	     Map("startLocation" -> "P", "endLocation" -> "Q", "distance" -> 4),
+  	     Map("startLocation" -> "Q", "endLocation" -> "Y", "distance" -> 8),
+  	     Map("startLocation" -> "Q", "endLocation" -> "W", "distance" -> 4),
+  	     Map("startLocation" -> "W", "endLocation" -> "Y", "distance" -> 7),
+  	     Map("startLocation" -> "W", "endLocation" -> "X", "distance" -> 5),
+             Map("startLocation" -> "K", "endLocation" -> "O", "distance" -> 3),
+  	     Map("startLocation" -> "O", "endLocation" -> "R", "distance" -> 4),
+ 	     Map("startLocation" -> "O", "endLocation" -> "S", "distance" -> 5),
+  	     Map("startLocation" -> "O", "endLocation" -> "V", "distance" -> 7),
+  	     Map("startLocation" -> "S", "endLocation" -> "V", "distance" -> 2),
+  	     Map("startLocation" -> "V", "endLocation" -> "Z", "distance" -> 9),
+  	     Map("startLocation" -> "M", "endLocation" -> "T", "distance" -> 4),
+  	     Map("startLocation" -> "T", "endLocation" -> "U", "distance" -> 3),
+  	     Map("startLocation" -> "U", "endLocation" -> "Z", "distance" -> 6),
+  	     Map("startLocation" -> "M", "endLocation" -> "N", "distance" -> 4),
+  	     Map("startLocation" -> "N", "endLocation" -> "S", "distance" -> 3),
+             Map("startLocation" -> "H", "endLocation" -> "N", "distance" -> 3),
+             Map("startLocation" -> "H", "endLocation" -> "L", "distance" -> 2),
+             Map("startLocation" -> "R", "endLocation" -> "W", "distance" -> 5),
+             Map("startLocation" -> "N", "endLocation" -> "Z", "distance" -> 8))
+
+     Expected Result: Map(distance -> 28, path -> A => B => C => I => K => P => Q => Y)
+
+7). Purpose: This is another stress test. With many edges availabe this test is to ensure with a lot of path options 
+    the program is able to find the shortest path without any errors or bugs that might be caused by the large
+    input.  
+
+    startingLocation: "D"
+    endLocation: "T"
+    Edges: List(
+  	     Map("startLocation" -> "A", "endLocation" -> "B", "distance" -> 3),
+  	     Map("startLocation" -> "A", "endLocation" -> "F", "distance" -> 2),
+ 	     Map("startLocation" -> "F", "endLocation" -> "E", "distance" -> 3),
+  	     Map("startLocation" -> "B", "endLocation" -> "C", "distance" -> 1),
+  	     Map("startLocation" -> "C", "endLocation" -> "E", "distance" -> 3),
+  	     Map("startLocation" -> "B", "endLocation" -> "D", "distance" -> 3),
+  	     Map("startLocation" -> "D", "endLocation" -> "I", "distance" -> 5),
+  	     Map("startLocation" -> "C", "endLocation" -> "I", "distance" -> 2),
+  	     Map("startLocation" -> "E", "endLocation" -> "H", "distance" -> 6),
+  	     Map("startLocation" -> "F", "endLocation" -> "G", "distance" -> 2),
+  	     Map("startLocation" -> "G", "endLocation" -> "M", "distance" -> 5),
+	     Map("startLocation" -> "H", "endLocation" -> "M", "distance" -> 4),
+  	     Map("startLocation" -> "I", "endLocation" -> "J", "distance" -> 3),
+ 	     Map("startLocation" -> "I", "endLocation" -> "K", "distance" -> 5),
+  	     Map("startLocation" -> "I", "endLocation" -> "L", "distance" -> 4),
+  	     Map("startLocation" -> "L", "endLocation" -> "O", "distance" -> 3),
+  	     Map("startLocation" -> "L", "endLocation" -> "N", "distance" -> 4),
+  	     Map("startLocation" -> "N", "endLocation" -> "T", "distance" -> 5),
+  	     Map("startLocation" -> "K", "endLocation" -> "P", "distance" -> 5),
+  	     Map("startLocation" -> "P", "endLocation" -> "Q", "distance" -> 4),
+  	     Map("startLocation" -> "Q", "endLocation" -> "Y", "distance" -> 8),
+  	     Map("startLocation" -> "Q", "endLocation" -> "W", "distance" -> 4),
+  	     Map("startLocation" -> "W", "endLocation" -> "Y", "distance" -> 7),
+  	     Map("startLocation" -> "W", "endLocation" -> "X", "distance" -> 5),
+             Map("startLocation" -> "K", "endLocation" -> "O", "distance" -> 3),
+  	     Map("startLocation" -> "O", "endLocation" -> "R", "distance" -> 4),
+ 	     Map("startLocation" -> "O", "endLocation" -> "S", "distance" -> 5),
+  	     Map("startLocation" -> "O", "endLocation" -> "V", "distance" -> 7),
+  	     Map("startLocation" -> "S", "endLocation" -> "V", "distance" -> 2),
+  	     Map("startLocation" -> "V", "endLocation" -> "Z", "distance" -> 9),
+  	     Map("startLocation" -> "M", "endLocation" -> "T", "distance" -> 4),
+  	     Map("startLocation" -> "T", "endLocation" -> "U", "distance" -> 3),
+  	     Map("startLocation" -> "U", "endLocation" -> "Z", "distance" -> 6),
+  	     Map("startLocation" -> "M", "endLocation" -> "N", "distance" -> 4),
+  	     Map("startLocation" -> "N", "endLocation" -> "S", "distance" -> 3),
+             Map("startLocation" -> "H", "endLocation" -> "N", "distance" -> 3),
+             Map("startLocation" -> "H", "endLocation" -> "L", "distance" -> 2),
+             Map("startLocation" -> "R", "endLocation" -> "W", "distance" -> 5),
+             Map("startLocation" -> "N", "endLocation" -> "Z", "distance" -> 8))
+
+     Expected Result: Map(distance -> 18, path -> D => I => L => N => T)
+
+8). Purpose: This is another stress test. With many edges availabe this test is to ensure with a lot of path options 
+    the program is able to find the shortest path without any errors or bugs that might be caused by the large
+    input.  
+
+    startingLocation: "B"
+    endLocation: "V"
+    Edges: List(
+  	     Map("startLocation" -> "A", "endLocation" -> "B", "distance" -> 3),
+  	     Map("startLocation" -> "A", "endLocation" -> "F", "distance" -> 2),
+ 	     Map("startLocation" -> "F", "endLocation" -> "E", "distance" -> 3),
+  	     Map("startLocation" -> "B", "endLocation" -> "C", "distance" -> 1),
+  	     Map("startLocation" -> "C", "endLocation" -> "E", "distance" -> 3),
+  	     Map("startLocation" -> "B", "endLocation" -> "D", "distance" -> 3),
+  	     Map("startLocation" -> "D", "endLocation" -> "I", "distance" -> 5),
+  	     Map("startLocation" -> "C", "endLocation" -> "I", "distance" -> 2),
+  	     Map("startLocation" -> "E", "endLocation" -> "H", "distance" -> 6),
+  	     Map("startLocation" -> "F", "endLocation" -> "G", "distance" -> 2),
+  	     Map("startLocation" -> "G", "endLocation" -> "M", "distance" -> 5),
+	     Map("startLocation" -> "H", "endLocation" -> "M", "distance" -> 4),
+  	     Map("startLocation" -> "I", "endLocation" -> "J", "distance" -> 3),
+ 	     Map("startLocation" -> "I", "endLocation" -> "K", "distance" -> 5),
+  	     Map("startLocation" -> "I", "endLocation" -> "L", "distance" -> 4),
+  	     Map("startLocation" -> "L", "endLocation" -> "O", "distance" -> 3),
+  	     Map("startLocation" -> "L", "endLocation" -> "N", "distance" -> 4),
+  	     Map("startLocation" -> "N", "endLocation" -> "T", "distance" -> 5),
+  	     Map("startLocation" -> "K", "endLocation" -> "P", "distance" -> 5),
+  	     Map("startLocation" -> "P", "endLocation" -> "Q", "distance" -> 4),
+  	     Map("startLocation" -> "Q", "endLocation" -> "Y", "distance" -> 8),
+  	     Map("startLocation" -> "Q", "endLocation" -> "W", "distance" -> 4),
+  	     Map("startLocation" -> "W", "endLocation" -> "Y", "distance" -> 7),
+  	     Map("startLocation" -> "W", "endLocation" -> "X", "distance" -> 5),
+             Map("startLocation" -> "K", "endLocation" -> "O", "distance" -> 3),
+  	     Map("startLocation" -> "O", "endLocation" -> "R", "distance" -> 4),
+ 	     Map("startLocation" -> "O", "endLocation" -> "S", "distance" -> 5),
+  	     Map("startLocation" -> "O", "endLocation" -> "V", "distance" -> 7),
+  	     Map("startLocation" -> "S", "endLocation" -> "V", "distance" -> 2),
+  	     Map("startLocation" -> "V", "endLocation" -> "Z", "distance" -> 9),
+  	     Map("startLocation" -> "M", "endLocation" -> "T", "distance" -> 4),
+  	     Map("startLocation" -> "T", "endLocation" -> "U", "distance" -> 3),
+  	     Map("startLocation" -> "U", "endLocation" -> "Z", "distance" -> 6),
+  	     Map("startLocation" -> "M", "endLocation" -> "N", "distance" -> 4),
+  	     Map("startLocation" -> "N", "endLocation" -> "S", "distance" -> 3),
+             Map("startLocation" -> "H", "endLocation" -> "N", "distance" -> 3),
+             Map("startLocation" -> "H", "endLocation" -> "L", "distance" -> 2),
+             Map("startLocation" -> "R", "endLocation" -> "W", "distance" -> 5),
+             Map("startLocation" -> "N", "endLocation" -> "Z", "distance" -> 8))
+
+     Expected Result: Map(distance -> 16, path -> B => C => I => L => N => S => V)
+
+9). Purpose: This test is to ensure error checking is in place. Specifically if startingLocation is a string of
+    length 1 or bigger.  
+
+    startingLocation: ""
+    endLocation: "D"
+    Edges: List(
+  	     Map("startLocation" -> "A", "endLocation" -> "F", "distance" -> 4),
+  	     Map("startLocation" -> "A", "endLocation" -> "B", "distance" -> 4),
+ 	     Map("startLocation" -> "A", "endLocation" -> "G", "distance" -> 4),
+  	     Map("startLocation" -> "B", "endLocation" -> "C", "distance" -> 5),
+  	     Map("startLocation" -> "C", "endLocation" -> "D", "distance" -> 4),
+  	     Map("startLocation" -> "F", "endLocation" -> "E", "distance" -> 5),
+  	     Map("startLocation" -> "F", "endLocation" -> "G", "distance" -> 4),
+  	     Map("startLocation" -> "E", "endLocation" -> "D", "distance" -> 3),
+  	     Map("startLocation" -> "G", "endLocation" -> "C", "distance" -> 4),
+  	     Map("startLocation" -> "G", "endLocation" -> "E", "distance" -> 4),
+  	     Map("startLocation" -> "G", "endLocation" -> "B", "distance" -> 4))
+
+     Expected Result: Error: Start location needs to be a string with a length of at least 1. Try again.
+
+10). Purpose: This test is to ensure error checking is in place. Specifically if endLocation is a string of
+    length 1 or bigger.  
+
+    startingLocation: "A"
+    endLocation: ""
+    Edges: List(
+  	     Map("startLocation" -> "A", "endLocation" -> "F", "distance" -> 4),
+  	     Map("startLocation" -> "A", "endLocation" -> "B", "distance" -> 4),
+ 	     Map("startLocation" -> "A", "endLocation" -> "G", "distance" -> 4),
+  	     Map("startLocation" -> "B", "endLocation" -> "C", "distance" -> 5),
+  	     Map("startLocation" -> "C", "endLocation" -> "D", "distance" -> 4),
+  	     Map("startLocation" -> "F", "endLocation" -> "E", "distance" -> 5),
+  	     Map("startLocation" -> "F", "endLocation" -> "G", "distance" -> 4),
+  	     Map("startLocation" -> "E", "endLocation" -> "D", "distance" -> 3),
+  	     Map("startLocation" -> "G", "endLocation" -> "C", "distance" -> 4),
+  	     Map("startLocation" -> "G", "endLocation" -> "E", "distance" -> 4),
+  	     Map("startLocation" -> "G", "endLocation" -> "B", "distance" -> 4))
+
+     Expected Result: Error: End location needs to be a string with a length of at least 1. Try again.
+
+11). Purpose: This test is to ensure error checking is in place. Specifically if map size is greater than
+     1. Otherwise this program is not needed to find a solution.   
+
+    startingLocation: "A"
+    endLocation: "Z"
+    Edges: List(Map("startLocation" -> "A", "endLocation" -> "F", "distance" -> 4))
+
+     Expected Result: Error: The given map needs at least 2 edges in order for this program to be needed.
+  
